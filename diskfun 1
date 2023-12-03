@@ -1,0 +1,67 @@
+#include <iostream>
+#include <ctime>
+#include <wchar.h>
+#include <Windows.h>
+#include <algorithm>
+#include <vector>
+#include <string>
+#include <string.h>
+#include <stdlib.h>
+#include <cstring>
+#include <conio.h>
+#include <iomanip>
+#include <process.h>
+#include <ctime>
+#include <cstdlib>
+#include <typeinfo>
+#include <fstream>
+
+
+
+using namespace std;
+class person {
+protected:
+    char name[80];
+    int age;
+public:
+    void getData() {
+        cout << "\n Enter a name: ";
+        cin >> name;
+        cout << "Enter the age";
+        cin >> age;
+    }
+    void showData() {
+        cout << "\n Name: " << name;
+        cout << "\n Age: " << age;
+    }
+};
+
+
+int main()
+{
+    char ch;
+    person pers;
+    fstream file;
+
+    file.open("GPOUP.DAT", ios::app | ios::out);
+
+    do {
+        cout << "\nEnter the information about the person:";
+        pers.getData();
+
+        file.write(reinterpret_cast<char*>(&pers), sizeof(pers));
+        cout << "To continue the input(y/n)? ";
+        cin >> ch;
+    } while (ch != 'n');
+    file.seekg(0);
+
+    file.read(reinterpret_cast<char*>(&pers), sizeof(pers));
+    while (!file.eof()) {
+        cout << "\nThe person:";
+        pers.showData();
+        file.read(reinterpret_cast<char*>(&pers), sizeof(pers));
+    }
+    cout << endl;
+
+    return 0;
+}
